@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Braseiro — Sistema de Pedidos</title>
+<meta name="description" content="Peça seus pratos favoritos do Braseiro com poucos cliques.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+
+<div class="loader" id="loader" aria-hidden="true">
+  <div class="loader__flame">
+    <i class="fa-solid fa-fire"></i>
+  </div>
+  <p class="loader__text">Acendendo a brasa…</p>
+</div>
+
+<div class="toast-stack" id="toastStack" aria-live="polite"></div>
+
+<header class="header" id="header">
+  <div class="header__inner">
+    <a href="#top" class="brand">
+      <span class="brand__mark"><i class="fa-solid fa-fire"></i></span>
+      <span class="brand__text">
+        <strong>Braseiro</strong>
+        <small>cozinha de fogo aberto</small>
+      </span>
+    </a>
+
+    <nav class="nav" id="mainNav">
+      <a href="#cardapio" class="nav__link">Cardápio</a>
+      <a href="#destaques" class="nav__link">Destaques</a>
+    </nav>
+
+    <div class="header__actions">
+      <button class="icon-btn" id="themeToggle" title="Alternar tema" aria-label="Alternar tema claro/escuro">
+        <i class="fa-solid fa-moon"></i>
+      </button>
+      <button class="icon-btn" id="favBtn" title="Favoritos" aria-label="Ver favoritos">
+        <i class="fa-solid fa-heart"></i>
+        <span class="badge" id="favBadge">0</span>
+      </button>
+      <button class="icon-btn icon-btn--cart" id="cartBtn" title="Carrinho" aria-label="Abrir carrinho">
+        <i class="fa-solid fa-bag-shopping"></i>
+        <span class="badge badge--accent" id="cartBadge">0</span>
+      </button>
+      <button class="icon-btn icon-btn--menu" id="menuToggle" aria-label="Abrir menu">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+
+  
+  <section class="hero">
+    <div class="hero__glow"></div>
+    <div class="hero__content">
+      <span class="eyebrow"><i class="fa-solid fa-bolt"></i> Entrega em até 35 min</span>
+      <h1>Fogo, fumaça <span>e sabor</span> na sua porta.</h1>
+      <p>Hambúrgueres no carvão, pizzas de borda crocante e sobremesas que fecham a noite com chave de ouro.</p>
+
+      <form class="search-bar" id="searchForm" role="search">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="search" id="searchInput" placeholder="Buscar X-Burger, Calabresa, Brownie…" aria-label="Buscar produtos">
+        <button type="submit">Buscar</button>
+      </form>
+
+      <div class="hero__tags">
+        <span><i class="fa-solid fa-star"></i> 4.8 de avaliação</span>
+        <span><i class="fa-solid fa-mug-hot"></i> +12.000 pedidos entregues</span>
+      </div>
+    </div>
+  </section>
+
+  
+  <section class="categories" aria-label="Categorias">
+    <div class="categories__track" id="categoryTrack">
+      <button class="cat-pill is-active" data-cat="todos"><i class="fa-solid fa-fire"></i> Tudo</button>
+      <button class="cat-pill" data-cat="entradas"><i class="fa-solid fa-bowl-rice"></i> Entradas</button>
+      <button class="cat-pill" data-cat="hamburgueres"><i class="fa-solid fa-burger"></i> Hambúrgueres</button>
+      <button class="cat-pill" data-cat="pizzas"><i class="fa-solid fa-pizza-slice"></i> Pizzas</button>
+      <button class="cat-pill" data-cat="massas"><i class="fa-solid fa-bowl-food"></i> Massas</button>
+      <button class="cat-pill" data-cat="carnes"><i class="fa-solid fa-drumstick-bite"></i> Carnes</button>
+      <button class="cat-pill" data-cat="bebidas"><i class="fa-solid fa-mug-saucer"></i> Bebidas</button>
+      <button class="cat-pill" data-cat="sobremesas"><i class="fa-solid fa-ice-cream"></i> Sobremesas</button>
+    </div>
+  </section>
+
+  
+  <section class="toolbar" id="destaques">
+    <div class="toolbar__row">
+      <h2 class="section-title">Cardápio <span id="resultCount"></span></h2>
+      <div class="toolbar__controls">
+        <select id="sortSelect" aria-label="Ordenar produtos">
+          <option value="relevancia">Relevância</option>
+          <option value="preco-asc">Menor preço</option>
+          <option value="preco-desc">Maior preço</option>
+          <option value="avaliacao">Melhor avaliação</option>
+        </select>
+        <button class="chip-filter" id="filterPromo" data-filter="promo"><i class="fa-solid fa-tag"></i> Promoções</button>
+        <button class="chip-filter" id="filterPopular" data-filter="popular"><i class="fa-solid fa-fire-flame-curved"></i> Mais vendidos</button>
+      </div>
+    </div>
+  </section>
+
+  
+  <section class="products" id="cardapio">
+    <div class="products__grid" id="productGrid">
+      
+    </div>
+    <p class="products__empty" id="emptyState" hidden>
+      <i class="fa-solid fa-utensils"></i><br>
+      Nenhum prato encontrado. Tente outra busca ou categoria.
+    </p>
+  </section>
+
+  
+  <section class="recommended">
+    <h2 class="section-title">Combina com seu pedido</h2>
+    <div class="products__grid products__grid--scroll" id="recommendedGrid"></div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer__inner">
+    <p><i class="fa-solid fa-fire"></i> Braseiro — cozinha de fogo aberto desde 2013.</p>
+  </div>
+</footer>
+
+<button class="back-top" id="backTop" aria-label="Voltar ao topo">
+  <i class="fa-solid fa-arrow-up"></i>
+</button>
+
+<div class="overlay" id="overlay"></div>
+
+<aside class="cart" id="cartSidebar" aria-label="Carrinho de compras">
+  <div class="cart__header">
+    <h2><i class="fa-solid fa-bag-shopping"></i> Seu pedido</h2>
+    <button class="icon-btn" id="cartClose" aria-label="Fechar carrinho"><i class="fa-solid fa-xmark"></i></button>
+  </div>
+
+  <div class="cart__body" id="cartBody">
+    <div class="cart__empty" id="cartEmpty">
+      <i class="fa-solid fa-bag-shopping"></i>
+      <p>Seu carrinho está vazio.</p>
+      <span>Adicione pratos deliciosos do nosso cardápio.</span>
+    </div>
+    <ul class="cart__list" id="cartList"></ul>
+  </div>
+
+  <div class="cart__footer" id="cartFooter" hidden>
+    <div class="coupon">
+      <input type="text" id="couponInput" placeholder="Cupom promocional (ex: BRASA10)">
+      <button id="couponBtn">Aplicar</button>
+    </div>
+    <p class="coupon__msg" id="couponMsg"></p>
+
+    <div class="cart__totals">
+      <div class="cart__row"><span>Subtotal</span><strong id="subtotalValue">R$ 0,00</strong></div>
+      <div class="cart__row"><span>Taxa de entrega</span><strong id="deliveryValue">R$ 0,00</strong></div>
+      <div class="cart__row cart__row--discount" id="discountRow" hidden><span>Desconto</span><strong id="discountValue">- R$ 0,00</strong></div>
+      <div class="cart__row cart__row--total"><span>Total</span><strong id="totalValue">R$ 0,00</strong></div>
+    </div>
+
+    <div class="cart__actions">
+      <button class="btn btn--ghost" id="clearCartBtn"><i class="fa-solid fa-trash"></i> Limpar carrinho</button>
+      <button class="btn btn--primary" id="checkoutBtn"><i class="fa-solid fa-circle-check"></i> Finalizar pedido</button>
+    </div>
+  </div>
+</aside>
+
+<div class="modal" id="checkoutModal">
+  <div class="modal__panel modal__panel--wide">
+    <div class="modal__header">
+      <h2><i class="fa-solid fa-clipboard-list"></i> Finalizar pedido</h2>
+      <button class="icon-btn" id="checkoutClose" aria-label="Fechar"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+
+    <form id="checkoutForm" class="checkout-form">
+      <div class="form-section">
+        <h3>Dados do cliente</h3>
+        <div class="form-grid">
+          <label class="field field--full">
+            <span>Nome completo</span>
+            <input type="text" id="custName" required placeholder="Seu nome">
+          </label>
+          <label class="field">
+            <span>Telefone</span>
+            <input type="tel" id="custPhone" required placeholder="(00) 00000-0000">
+          </label>
+          <label class="field">
+            <span>Cidade</span>
+            <input type="text" id="custCity" required placeholder="Sua cidade">
+          </label>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h3>Endereço de entrega</h3>
+        <div class="form-grid">
+          <label class="field field--full">
+            <span>Endereço</span>
+            <input type="text" id="custAddress" required placeholder="Rua, avenida…">
+          </label>
+          <label class="field">
+            <span>Número</span>
+            <input type="text" id="custNumber" required placeholder="123">
+          </label>
+          <label class="field">
+            <span>Complemento</span>
+            <input type="text" id="custComplement" placeholder="Apto, bloco… (opcional)">
+          </label>
+          <label class="field field--full">
+            <span>Bairro</span>
+            <input type="text" id="custNeighborhood" required placeholder="Seu bairro">
+          </label>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h3>Forma de pagamento</h3>
+        <div class="payment-grid" id="paymentGrid">
+          <label class="payment-option">
+            <input type="radio" name="payment" value="PIX" checked>
+            <span><i class="fa-brands fa-pix"></i> PIX</span>
+          </label>
+          <label class="payment-option">
+            <input type="radio" name="payment" value="Dinheiro">
+            <span><i class="fa-solid fa-money-bill-wave"></i> Dinheiro</span>
+          </label>
+          <label class="payment-option">
+            <input type="radio" name="payment" value="Cartão de Crédito">
+            <span><i class="fa-solid fa-credit-card"></i> Crédito</span>
+          </label>
+          <label class="payment-option">
+            <input type="radio" name="payment" value="Cartão de Débito">
+            <span><i class="fa-solid fa-credit-card"></i> Débito</span>
+          </label>
+        </div>
+
+        <label class="field field--full" id="changeField" hidden>
+          <span>Troco para quanto?</span>
+          <input type="number" id="custChange" placeholder="Ex: 50">
+        </label>
+      </div>
+
+      <div class="checkout-summary" id="checkoutSummary"></div>
+
+      <button type="submit" class="btn btn--primary btn--block">
+        <i class="fa-solid fa-fire"></i> Confirmar pedido
+      </button>
+    </form>
+  </div>
+</div>
+
+<div class="modal" id="successModal">
+  <div class="modal__panel modal__panel--success">
+    <div class="success-anim">
+      <i class="fa-solid fa-check"></i>
+    </div>
+    <h2>Pedido realizado!</h2>
+    <p>Seu pedido foi enviado para a cozinha e já está sendo preparado.</p>
+    <div class="order-receipt" id="orderReceipt"></div>
+    <button class="btn btn--primary btn--block" id="successClose">Voltar ao cardápio</button>
+  </div>
+</div>
+
+<div class="modal" id="favModal">
+  <div class="modal__panel modal__panel--wide">
+    <div class="modal__header">
+      <h2><i class="fa-solid fa-heart"></i> Seus favoritos</h2>
+      <button class="icon-btn" id="favClose" aria-label="Fechar"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="products__grid" id="favGrid"></div>
+    <p class="products__empty" id="favEmpty" hidden>
+      <i class="fa-regular fa-heart"></i><br>Você ainda não favoritou nenhum prato.
+    </p>
+  </div>
+</div>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#cardapio">Cardápio</a>
+  <a href="#destaques">Destaques</a>
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
